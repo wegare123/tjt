@@ -118,8 +118,7 @@ cat <<EOF> /usr/bin/ping-tjt
 #tjt (Wegare)
 while :
 do
-fping -c1 10.0.0.2
-sleep 1
+curl ipv4.icanhazip.com
 done
 EOF
 chmod +x /usr/bin/ping-tjt
