@@ -116,10 +116,7 @@ route add default gw 10.0.0.2 metric 0
 cat <<EOF> /usr/bin/ping-tjt
 #!/bin/bash
 #tjt (Wegare)
-while :
-do
-curl ipv4.icanhazip.com
-done
+fping -l 10.0.0.2
 EOF
 chmod +x /usr/bin/ping-tjt
 /usr/bin/ping-tjt > /dev/null 2>&1 &
