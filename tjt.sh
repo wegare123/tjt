@@ -10,11 +10,11 @@ route del "$host" gw "$route" metric 0 2>/dev/null
 ip link delete tun1 2>/dev/null
 /etc/init.d/dnsmasq restart 2>/dev/null
 }
-udp2="$(cat /root/akun/tjt.txt | grep -i udp | cut -d= -f2)" 
-host2="$(cat /root/akun/tjt.txt | grep -i host | cut -d= -f2 | head -n1)" 
-port2="$(cat /root/akun/tjt.txt | grep -i port | cut -d= -f2)" 
-bug2="$(cat /root/akun/tjt.txt | grep -i bug | cut -d= -f2)" 
-pass2="$(cat /root/akun/tjt.txt | grep -i pass | cut -d= -f2)" 
+host2="$(cat /root/akun/tjt.txt | tr '\n' ' '  | awk '{print $1}')"
+port2="$(cat /root/akun/tjt.txt | tr '\n' ' '  | awk '{print $2}')" 
+pass2="$(cat /root/akun/tjt.txt | tr '\n' ' '  | awk '{print $3}')" 
+bug2="$(cat /root/akun/tjt.txt | tr '\n' ' '  | awk '{print $4}')" 
+udp2="$(cat /root/akun/tjt.txt | tr '\n' ' '  | awk '{print $5}')" 
 clear
 echo "Inject trojan by wegare"
 echo "1. Sett Profile"
@@ -57,12 +57,14 @@ badvpn="--socks-server-addr 127.0.0.1:1080 --udpgw-remote-server-addr 127.0.0.1:
 else
 badvpn="--socks-server-addr 127.0.0.1:1080"
 fi
-
-echo "host=$host
-port=$port
-pass=$pass
-bug=$bug
-udp=$udp" > /root/akun/tjt.txt
+if [[ -z $udp ]]; then
+udp="-"
+fi
+echo "$host
+$port
+$pass
+$bug
+$udp" > /root/akun/tjt.txt
 cat <<EOF> /root/akun/tjt.json
 {
     "run_type": "client",
