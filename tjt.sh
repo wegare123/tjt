@@ -1,7 +1,7 @@
 #!/bin/bash
 #tjt (Wegare)
 stop () {
-host="$(cat /root/akun/tjt.txt | grep -i host | cut -d= -f2 | head -n1)" 
+host="$(cat /root/akun/tjt.txt | tr '\n' ' '  | awk '{print $1}')"
 route="$(cat /root/akun/ipmodem.txt | grep -i ipmodem | cut -d= -f2 | tail -n1)" 
 killall -q badvpn-tun2socks trojan ping-tjt fping
 route del 8.8.8.8 gw "$route" metric 0 2>/dev/null
@@ -113,8 +113,8 @@ elif [ "${tools}" = "2" ]; then
 stop
 ipmodem="$(route -n | grep -i 0.0.0.0 | head -n1 | awk '{print $2}')" 
 echo "ipmodem=$ipmodem" > /root/akun/ipmodem.txt
-udp="$(cat /root/akun/tjt.txt | grep -i udp | cut -d= -f2)" 
-host="$(cat /root/akun/tjt.txt | grep -i host | cut -d= -f2 | head -n1)" 
+udp="$(cat /root/akun/tjt.txt | tr '\n' ' '  | awk '{print $5}')" 
+host="$(cat /root/akun/tjt.txt | tr '\n' ' '  | awk '{print $1}')"
 route="$(cat /root/akun/ipmodem.txt | grep -i ipmodem | cut -d= -f2 | tail -n1)"
 
 trojan -c /root/akun/tjt.json &
@@ -126,11 +126,10 @@ route add 8.8.8.8 gw $route metric 0
 route add 8.8.4.4 gw $route metric 0
 route add $host gw $route metric 0
 route add default gw 10.0.0.2 metric 0
-echo '
-#!/bin/bash
+echo "#!/bin/bash
 #tjt (Wegare)
-host="$(cat /root/akun/tjt.txt | grep -i host | cut -d= -f2 | head -n1)"
-fping -l $host' > /usr/bin/ping-tjt
+host=$(cat /root/akun/tjt.txt | tr '\n' ' '  | awk '{print $1}')
+fping -l $host" > /usr/bin/ping-tjt
 chmod +x /usr/bin/ping-tjt
 /usr/bin/ping-tjt > /dev/null 2>&1 &
 sleep 5
