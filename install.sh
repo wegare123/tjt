@@ -34,7 +34,7 @@ wget --no-check-certificate "https://raw.githubusercontent.com/wegare123/tjt/mai
 wget --no-check-certificate "https://raw.githubusercontent.com/wegare123/tjt/main/autorekonek-tjt.sh" -O /usr/bin/autorekonek-tjt
 wget --no-check-certificate "https://github.com/wegare123/backup/blob/main/tun2socks?raw=true" -O /usr/bin/tun2socks
 chmod +x /usr/bin/tun2socks
-opkg install ip-full ipset lsof fping && opkg install *.ipk
+opkg install ip-full ipset lsof httping && opkg install *.ipk
 chmod +x /usr/bin/tjt
 chmod +x /usr/bin/autorekonek-tjt
 chmod +x /usr/bin/trojan

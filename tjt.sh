@@ -3,7 +3,7 @@
 stop () {
 host="$(cat /root/akun/tjt.txt | tr '\n' ' '  | awk '{print $1}')"
 route="$(cat /root/akun/ipmodem.txt | grep -i ipmodem | cut -d= -f2 | tail -n1)" 
-killall -q badvpn-tun2socks trojan ping-tjt fping
+killall -q badvpn-tun2socks trojan ping-tjt httping
 route del 8.8.8.8 gw "$route" metric 0 2>/dev/null
 route del 8.8.4.4 gw "$route" metric 0 2>/dev/null
 route del "$host" gw "$route" metric 0 2>/dev/null
@@ -132,10 +132,10 @@ route add 8.8.8.8 gw $route metric 0
 route add 8.8.4.4 gw $route metric 0
 route add $host gw $route metric 0
 route add default gw 10.0.0.2 metric 0
-echo "#!/bin/bash
+echo '
+#!/bin/bash
 #tjt (Wegare)
-host=$(cat /root/akun/tjt.txt | tr '\n' ' '  | awk '{print $1}')
-fping -l $host" > /usr/bin/ping-tjt
+httping m.google.com' > /usr/bin/ping-tjt
 chmod +x /usr/bin/ping-tjt
 /usr/bin/ping-tjt > /dev/null 2>&1 &
 sleep 5
